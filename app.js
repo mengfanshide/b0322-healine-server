@@ -43,9 +43,9 @@ var corsOptions = {
 		}
 	},
 };
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
-// app.use(cors());
+app.use(cors());
 
 //session  token jwt
 //token 令牌 生成时间, 过期时间
