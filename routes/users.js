@@ -87,7 +87,7 @@ router.post('/login', async (req, res, next) => {
     );
 });
 router.post('/getCode', (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
     //模拟验证码
     //生成四位随机数
     let verifyCode = Math.round(Math.random() * 8999 + 1000);
@@ -102,7 +102,7 @@ router.get('/userInfo', (req, res, next)=>{
     const token = req.query.token;
     // console.log(req.query);
     jwt.verify(token, 'Buka-B0322', (error, decode)=>{
-        console.log(error);
+        // console.log(error);
         if (error) {
             //有错进行处
             return res.status(401).json(error);
@@ -110,7 +110,7 @@ router.get('/userInfo', (req, res, next)=>{
         const {username} = decode;
         //通过存储的用户名找峰峰酱
 
-        console.log(decode);
+        // console.log(decode);
         User.find({username}, (error, data)=>{
             res.json({
                 success: 'success',

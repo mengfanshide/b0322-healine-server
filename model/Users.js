@@ -30,7 +30,7 @@ const userSchema = new Schema({
         default: '/uploads/avatar-default.png'
     },
     introduce: String,
-    last_modefied_time:{
+    last_modified_time:{
         type: Date,
         default: Date.now
     }

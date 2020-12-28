@@ -70,7 +70,7 @@ app.use(cors());
 // //   console.log(data, 'data');
 // });
 
-app.use(authorization());
+// app.use(authorization());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
