@@ -2,6 +2,7 @@ const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const jwt = require("jsonwebtoken");
+const authorization = require('./middleware/authorization.js');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -55,36 +56,39 @@ app.use(cors());
 //签名 加密 可以是字符串, 证书  https
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9. eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-const token = jwt.sign(
-	{
-		name: "刘佳峰",
-		nickname: "佳峰刘",
-	},
-	"jiafeng",
-	{ expiresIn: 60 * 60 }
-);
-// console.log(token); //登录成功把这个扔给前台, 最简单的存储方式: localStorage
-jwt.verify(token, 'jiafeng',(error, data)=>{
-//   console.log(error, 'error');
-//   console.log(data, 'data');
-});
+// const token = jwt.sign(
+// 	{
+// 		name: "刘佳峰",
+// 		nickname: "佳峰刘",
+// 	},
+// 	"jiafeng",
+// 	{ expiresIn: 60 * 60 }
+// );
+// // console.log(token); //登录成功把这个扔给前台, 最简单的存储方式: localStorage
+// jwt.verify(token, 'jiafeng',(error, data)=>{
+// //   console.log(error, 'error');
+// //   console.log(data, 'data');
+// });
+
+app.use(authorization());
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-	next(createError(404));
-});
+// app.use(function (req, res, next) {
+// 	next(createError(404));
+// });
 
-// error handler
-app.use(function (err, req, res, next) {
-	// set locals, only providing error in development
-	res.locals.message = err.message;
-	res.locals.error = req.app.get("env") === "development" ? err : {};
+// // error handler
+// app.use(function (err, req, res, next) {
+// 	// set locals, only providing error in development
+// 	res.locals.message = err.message;
+// 	res.locals.error = req.app.get("env") === "development" ? err : {};
 
-	// render the error page
-	res.status(err.status || 500);
-	// res.render('error');
-});
+// 	// render the error page
+// 	res.status(err.status || 500);
+// 	// res.render('error');
+// });
 
 module.exports = app;

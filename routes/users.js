@@ -63,10 +63,11 @@ router.post('/login', async (req, res, next) => {
     // console.log(result, 'async');
     User.find(
         { mobile: formData.mobile },
-        'nickname gender',
+        'nickname username',
         (error, result) => {
-            // console.log(result);
+            console.log(result);
             //登录成功创建jwt
+            
             const token = jwt.sign(
                 {
                     //私有荷载, 尽量不要放敏感内容
@@ -74,7 +75,7 @@ router.post('/login', async (req, res, next) => {
                     username: result[0].username
                 },
                 'Buka-B0322',
-                { expiresIn: 60 }
+                { expiresIn: 60*60*24 }
             );
 
             res.json({
@@ -96,4 +97,27 @@ router.post('/getCode', (req, res, next) => {
         verifyCode
     });
 });
+//getUserInfo , token
+router.get('/userInfo', (req, res, next)=>{
+    const token = req.query.token;
+    // console.log(req.query);
+    jwt.verify(token, 'Buka-B0322', (error, decode)=>{
+        console.log(error);
+        if (error) {
+            //有错进行处
+            return res.status(401).json(error);
+        }
+        const {username} = decode;
+        //通过存储的用户名找峰峰酱
+
+        console.log(decode);
+        User.find({username}, (error, data)=>{
+            res.json({
+                success: 'success',
+                data
+            });
+        });
+    });
+});
+
 module.exports = router;

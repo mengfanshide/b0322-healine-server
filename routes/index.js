@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
   user page users
   login page login
 */
-router.use('/home',authorization());
+// router.use('/home',authorization());
 router.get('/home', function (req, res, next) {
     // res.render('index', { title: 'Express' });
     /* 
