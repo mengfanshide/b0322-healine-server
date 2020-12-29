@@ -2,6 +2,22 @@ const express = require('express');
 const router = express.Router();
 const User = require('../model/Users.js');
 const jwt = require('jsonwebtoken');
+const path = require('path');
+const multer = require('multer');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        //临时上传的文件应该给个临时地址就成, 定期清理临时上传文件夹
+      cb(null, './uploads/');
+    },
+    filename: function (req, file, cb) {
+
+        // console.log(file);
+        const extName = path.extname(file.originalname)
+      cb(null, file.fieldname + '-' + Date.now() + extName)
+    }
+  })
+  
+  var upload = multer({ storage: storage })
 /* GET users listing. */
 // router.get('/', function(req, res, next) {
 //   res.send('respond with a resource');
@@ -118,6 +134,14 @@ router.get('/userInfo', (req, res, next)=>{
             });
         });
     });
+});
+
+router.post('/avatar', upload.single('avatar'), (req, res)=>{
+    console.log(req.file);
+    res.json({
+        success: 'success',
+        avatar: 'http://localhost:3333/uploads/'+req.file.filename
+    })
 });
 
 module.exports = router;

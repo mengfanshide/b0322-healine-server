@@ -6,7 +6,6 @@ const authorization = require('./middleware/authorization.js');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 
@@ -24,7 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
+//地址映射
+app.use('/uploads', express.static(path.join(__dirname, "uploads")));
 /* 
   跨域需要在路由之上
   Access-Control-Allow-Origin 值可以是 * 可以是具体的url  //允许访问的源(地址)
