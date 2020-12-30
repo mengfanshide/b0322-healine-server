@@ -16,7 +16,7 @@ var storage = multer.diskStorage({
       cb(null, file.fieldname + '-' + Date.now() + extName)
     }
   })
-  
+// var storage = multer.memoryStorage()
   var upload = multer({ storage: storage })
 /* GET users listing. */
 // router.get('/', function(req, res, next) {
@@ -39,24 +39,24 @@ var storage = multer.diskStorage({
 // });
 //created 发送请求
 //单独验证这个请求的路由
-router.get('/authorization', (req, res, next) => {
-	let success = true;
-    if (req.headers.authorization) {
-        const Bearer = req.headers.authorization;
-        const token = Bearer.substr(7);
-        jwt.verify(token, 'Buka-B0322', function (error, decode) {
-            if (error) {
-				//有错进行处理
-				success = false;
-            }
-        });
-    } else {
-       success = false;
-	}
-	res.json({
-		success
-	});
-});
+// router.get('/authorization', (req, res, next) => {
+// 	let success = true;
+//     if (req.headers.authorization) {
+//         const Bearer = req.headers.authorization;
+//         const token = Bearer.substr(7);
+//         jwt.verify(token, 'Buka-B0322', function (error, decode) {
+//             if (error) {
+// 				//有错进行处理
+// 				success = false;
+//             }
+//         });
+//     } else {
+//        success = false;
+// 	}
+// 	res.json({
+// 		success
+// 	});
+// });
 
 router.post('/login', async (req, res, next) => {
     // console.log(req.body);
@@ -138,10 +138,16 @@ router.get('/userInfo', (req, res, next)=>{
 
 router.post('/avatar', upload.single('avatar'), (req, res)=>{
     console.log(req.file);
+    // console.log(req.file.buffer);
     res.json({
         success: 'success',
-        avatar: 'http://localhost:3333/uploads/'+req.file.filename
+        avatar: 'http://localhost:3333/' + req.file.filename
     })
 });
+router.post('/edit', (req, res)=>{
+    //req.body
 
+    User.findByIdAndUpdate({_id: id}, {nickname: req.body.nickname, gender: req.body.gender, age: req.body.age});
+
+});
 module.exports = router;
